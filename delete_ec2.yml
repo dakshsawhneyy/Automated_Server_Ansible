@@ -1,0 +1,19 @@
+- 
+  name: Delete EC2 instance
+  hosts: localhost
+  connection: local
+  tasks:
+    - name: Terminate EC2 instance
+      amazon.aws.ec2_instance:
+        name: "my-ec2-instance"
+        instance_ids: 
+          - "i-0339950c3d279b030" 
+        state: absent
+        region: "ap-south-1"
+        aws_access_key: "{{ aws_access_key }}"
+        aws_secret_key: "{{ aws_secret_key }}"
+      register: ec2_termination
+
+    - name: Debug termination result
+      debug:
+        var: ec2_termination

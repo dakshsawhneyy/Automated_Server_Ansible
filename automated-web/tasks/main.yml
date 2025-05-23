@@ -1,0 +1,55 @@
+- name: Create a new user
+  ansible.builtin.user:
+    name: daksh
+    state: present
+    shell: /bin/bash
+    groups: sudo
+    create_home: yes
+- name: Create .ssh directory
+  ansible.builtin.file:
+    path: /home/daksh/.ssh
+    state: directory
+    owner: daksh
+    group: daksh
+    mode: '0700'  #Make it super secure
+- name: Copy public key to the server
+  ansible.builtin.authorized_key:
+    user: daksh
+    state: present
+    key: "{{ lookup('file', 'files/daksh_key.pub') }}"
+- name: Update system
+  ansible.builtin.apt:
+    update_cache: yes
+- name: Install Nginx
+  ansible.builtin.apt:
+    name: nginx
+    state: present
+- name: Start Nginx
+  ansible.builtin.service:
+    name: nginx
+    state: started
+    enabled: yes
+- name: copy index.html to server
+  ansible.builtin.copy:
+    src: files/index.html
+    dest: /var/www/html/index.html
+- name: Allow HTTP port 80
+  ansible.builtin.ufw:
+    rule: allow
+    port: 80
+    proto: tcp
+- name: Allow HTTP port 443
+  ansible.builtin.ufw:
+    rule: allow
+    port: 443
+    proto: tcp
+- name: enable ufw firewall
+  ansible.builtin.ufw:
+    state: enabled
+- name: Schedule daily update with cron
+  ansible.builtin.cron:
+    name: "Daily update"
+    minute: 0
+    hour: 2
+    job: "apt-get update -y && apt-get -y upgrade"
+    user: root

@@ -1,0 +1,6 @@
+-
+  name: Creating User
+  become: true
+  hosts: all
+  roles:
+    - automated-web
