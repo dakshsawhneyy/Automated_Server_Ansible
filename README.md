@@ -279,6 +279,6 @@ Ansible version 2.10+ recommended
 
 This project is your stepping stone to professional-grade Infrastructure as Code.
 You're automating from zero to production — EC2 provisioning, firewalling, web server setup, scheduled tasks, and teardown.
-Keep this 🔥 grind alive, and you're headed straight for elite DevOps roles.
+Keep this grind alive, and you're headed straight for elite DevOps roles.
 
 **"Make your systems work for you — while you sleep."**
